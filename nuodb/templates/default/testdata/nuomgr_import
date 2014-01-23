@@ -1,0 +1,2 @@
+start process sm host localhost database testdb archive <%= node[:nuodb]['data_dir'] %>/testdb initialize true options '--verbose info,warn,error'
+start process te host localhost database testdb options '--dba-user dba --dba-password dba --verbose info,warn,error'
