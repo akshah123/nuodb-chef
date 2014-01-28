@@ -30,11 +30,19 @@ default[:nuodb]["config_dir"] = "/etc/nuodb"
 default[:nuodb]["data_dir"] = "/opt/nuodb/data"
 default[:nuodb]["log_dir"] = "/opt/nuodb/logs"
   
-default[:nuodb]["brokers"] = ['broker']
+default[:nuodb][:advertiseAlt] = false
+default[:nuodb][:altAddr] = ""
+default[:nuodb]["brokers"] = ['localhost']
+default[:nuodb]["enableAutomation"] = false
+default[:nuodb]["enableAutomationBootstrap"] = false
+default[:nuodb]["automationTemplate"] = "Minimally Redundant"
 default[:nuodb]["is_broker"] = false
 default[:nuodb]["domain"] = "domain"
 default[:nuodb]["domainPassword"] = "bird"
+default[:nuodb]["loglevel"] = "INFO" #  default logging level
 default[:nuodb]["port"] = "48004"
 default[:nuodb]["portRange"] = "48005"
+default[:nuodb]["region"] = "default"
+  
   
 

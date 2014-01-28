@@ -56,13 +56,14 @@ end
     mode "00755"
   end
 end
-
-template File.join(node[:nuodb]['install_dir'], 'etc/default.properties') do
-  source '/etc/default.properties'
-  mode "0644"
-  owner node[:nuodb]['user']
-  group node[:nuodb]['group']
-  notifies :restart, "service[nuoagent]", :delayed
+['etc/default.properties'].each do |file|
+  template File.join(node[:nuodb]['install_dir'], file) do
+    source file
+    mode "0644"
+    owner node[:nuodb]['user']
+    group node[:nuodb]['group']
+    notifies :restart, "service[nuoagent]", :delayed
+  end
 end
 
 if node[:nuodb]["license"].length > 0
@@ -90,9 +91,27 @@ end
 
 #Broker node should also have a web console running
 if node[:nuodb]["is_broker"]
-  service "nuowebconsole" do
-    supports :status => true, :restart => true, :reload => true
+  ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
+    template File.join(node[:nuodb]['install_dir'], file) do
+      source file
+      mode "0644"
+      owner node[:nuodb]['user']
+      group node[:nuodb]['group']
+      notifies :restart, "service[nuoautoconsole]", :delayed
+    end
+  end
+  service "nuoautoconsole" do
     action [ :enable, :start ]
+    supports :status => true, :restart => true, :reload => true
+  end
+else
+  ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
+    template File.join(node[:nuodb]['install_dir'], file) do
+      source file
+      mode "0644"
+      owner node[:nuodb]['user']
+      group node[:nuodb]['group']
+    end
   end
 end
 if node[:nuodb][:testdata]
