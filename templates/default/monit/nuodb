@@ -1,0 +1,12 @@
+set alert <%= node[:nuodb][:monitoring][:alert_email] %> NOT ON { action, instance, pid, ppid }
+set mailserver <%= node[:nuodb][:monitoring][:mailserver] %>
+
+set httpd port 2812 and
+  use address localhost
+  allow localhost
+
+check process nuoagent with pidfile /var/run/nuodb/nuoagent.pid
+   start program = "/etc/init.d/nuoagent start" with timeout 30 seconds
+   stop  program = "/etc/init.d/nuoagent stop"
+   if failed host 127.0.0.1 port <%= node[:nuodb][:port] %> type tcp then restart
+   if 5 restarts within 5 cycles then timeout
