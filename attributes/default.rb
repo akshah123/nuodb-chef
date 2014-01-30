@@ -43,6 +43,7 @@ default[:nuodb]["portRange"] = "48005"
 default[:nuodb]["region"] = "default"
   
 #enable basic monitoring via monit
+# If you have another monitoring system best to set this to false
 default[:nuodb][:monitoring][:enable] = true
 default[:nuodb][:monitoring][:alert_email] = "alert@example.com"
 default[:nuodb][:monitoring][:mailserver] = "localhost"

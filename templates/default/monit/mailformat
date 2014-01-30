@@ -1,0 +1,8 @@
+set mail-format {
+  from: monit@$HOST
+  subject: $SERVICE $EVENT
+  message: Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION.
+Yours sincerely,
+monit
+
+}

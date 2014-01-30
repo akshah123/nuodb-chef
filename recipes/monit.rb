@@ -4,12 +4,14 @@ package "monit" do
   action :install
 end
 
-template "/etc/monit.d/nuodb" do
-  source "monit/nuodb"
-  mode "0644"
-  owner "root"
-  group "root"
-  notifies :restart, "service[monit]", :delayed
+["nuodb", "mailformat"].each do |file|
+  template "/etc/monit.d/" + file do
+    source "monit/" + file
+    mode "0644"
+    owner "root"
+    group "root"
+    notifies :restart, "service[monit]", :delayed
+  end
 end
 
 service "monit" do
