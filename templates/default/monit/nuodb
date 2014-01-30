@@ -1,4 +1,4 @@
-set alert <%= node[:nuodb][:monitoring][:alert_email] %> ONLY ON { alert, timeout }
+set alert <%= node[:nuodb][:monitoring][:alert_email] %>
 set mailserver <%= node[:nuodb][:monitoring][:mailserver] %>
 
 set httpd port 2812 and
