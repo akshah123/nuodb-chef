@@ -20,8 +20,6 @@ default[:nuodb][:version] = "2.0.2"
 # Set this to something to use a custom download URL  
 default[:nuodb][:download_url] = ""
 default[:nuodb]["license"] = ""
-  
-default[:nuodb]["host"] = "0.0.0.0"
 
 default[:nuodb]["user"] = "nuodb"
 default[:nuodb]["group"] = "nuodb"
@@ -43,6 +41,12 @@ default[:nuodb]["loglevel"] = "INFO" #  default logging level
 default[:nuodb]["port"] = "48004"
 default[:nuodb]["portRange"] = "48005"
 default[:nuodb]["region"] = "default"
+  
+#enable basic monitoring via monit
+# If you have another monitoring system best to set this to false
+default[:nuodb][:monitoring][:enable] = true
+default[:nuodb][:monitoring][:alert_email] = "alert@example.com"
+default[:nuodb][:monitoring][:mailserver] = "localhost"
   
   
 

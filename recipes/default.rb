@@ -29,6 +29,9 @@ artifact = File.basename(download_url)
 license_file = File.join(node[:nuodb]['install_dir'], 'license.file')
 
 include_recipe "java"
+if node[:nuodb][:monitoring][:enable]
+  include_recipe "nuodb::monit"
+end
 
 group node[:nuodb]['group'] do
   action :create
