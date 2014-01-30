@@ -1,4 +1,4 @@
-set alert <%= node[:nuodb][:monitoring][:alert_email] %> ONLY ON { timeout }
+set alert <%= node[:nuodb][:monitoring][:alert_email] %> ONLY ON { alert, timeout }
 set mailserver <%= node[:nuodb][:monitoring][:mailserver] %>
 
 set httpd port 2812 and
@@ -10,3 +10,11 @@ check process nuoagent with pidfile /var/run/nuodb/nuoagent.pid
    stop  program = "/etc/init.d/nuoagent stop"
    if failed host 127.0.0.1 port <%= node[:nuodb][:port] %> type tcp then restart
    if 5 restarts within 5 cycles then timeout
+   
+<% node['filesystem'].each() do |device, stats|
+    if stats['fs_type'].eql?("ext4") -%>
+check filesystem filesystem-<%= stats['mount'] %> with path <%= stats['mount'] %>
+  if space usage > 80% for 3 cycles then alert
+
+<%  end
+  end -%>
