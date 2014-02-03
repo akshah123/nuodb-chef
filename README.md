@@ -35,8 +35,8 @@ See `attributes/default.rb` for default values. All values are strings unless ot
 * `node[:nuodb]["enableAutomationBootstrap"]` - Boolean. Should this node bootstrap the system database? See [NuoDB manual](http://dev.nuodb.com)
 * `node[:nuodb]["automationTemplate"]` - How resilient should your system database be? Valid options are "Single Host" or "Minimally Redundant"
 * `node[:nuodb]["is_broker"]` - Boolean. Should this host be a broker?
-* `node[:nuodb]["domain"]` - The name of your domain. All nodes in the same cluster should have the same domain name
-* `node[:nuodb]["domainPassword"]` - The administrative password for your domain. All nodes should have the same password
+* `node[:nuodb]["domain_name"]` - The name of your domain. All nodes in the same cluster should have the same domain name
+* `node[:nuodb]["domain_password"]` - The administrative password for your domain. All nodes should have the same password
 * `node[:nuodb]["loglevel"]` - Default logging level. Valid levels are, from most to least verbose: ALL, FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE, OFF
 * `node[:nuodb]["port"]` - What port will the agent start on?
 * `node[:nuodb]["portRange"]` - Subprocesses of NuoDB use a port range that start at a certain point and increment by one. This is that starting port (usually one port higher than the agent port)
