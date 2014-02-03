@@ -41,13 +41,14 @@ See `attributes/default.rb` for default values. All values are strings unless ot
 * `node[:nuodb]["port"]` - What port will the agent start on?
 * `node[:nuodb]["portRange"]` - Subprocesses of NuoDB use a port range that start at a certain point and increment by one. This is that starting port (usually one port higher than the agent port)
 * `node[:nuodb]["region"]` - The name of the region this database lives in
-## Enabling basic monitoring via monit
-### If you have another monitoring system best to set this to false
+
+Enabling basic monitoring via monit
+If you have another monitoring system best to set this to false
 * `node[:nuodb][:monitoring][:enable]` - Boolean. Should Monit be enabled for this node?
 * `node[:nuodb][:monitoring][:alert_email]` - The email address to send alerts to
 * `node[:nuodb][:monitoring][:mailserver]` - What host is the mail server running on?
 
-## These attributes are in the cookbook but cannot be changed with an RPM or dpkg installation, which is the current method. They are included here only for forward compatibility.
+These attributes are in the cookbook but cannot be changed with an RPM or dpkg installation, which is the current method. They are included here only for forward compatibility.
 * `node[:nuodb]["user"]` - "nuodb"
 * `node[:nuodb]["group"]` - "nuodb"
 * `node[:nuodb]["install_dir"]` - "/opt/nuodb"
