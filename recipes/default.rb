@@ -92,6 +92,14 @@ bash "Load License" do
   EOH
 end
 
+['etc/nuodb.config'].each do |file|
+  template File.join(node[:nuodb]['install_dir'], file) do
+    source file
+    mode "0644"
+    owner node[:nuodb]['user']
+    group node[:nuodb]['group']
+  end
+end
 #Broker node should also have a web console running
 if node[:nuodb]["is_broker"]
   ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
