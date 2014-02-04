@@ -22,7 +22,7 @@ unless File.exists?(File.join(node[:nuodb]['data_dir'], "testdb"))
     user node[:nuodb]['user']
     cwd testdata_dir
     code <<-EOH
-      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domainPassword']} --file #{File.join(testdata_dir, "nuomgr_import")}
+      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domain_password']} --file #{File.join(testdata_dir, "nuomgr_import")}
     EOH
   end
 end

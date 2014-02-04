@@ -1,7 +1,7 @@
 # NuoDB options
 nuoDBConfiguration:
-  username: <%= node[:nuodb]['domain_name'] %>		# NuoDB domain user name
-  password: <%= node[:nuodb]['domain_password'] %>		  # NuoDB domain user password
+  username: <%= node[:nuodb]['domain_name'] %>
+  password: <%= node[:nuodb]['domain_password'] %>
 <% if node[:nuodb][:brokers].length() == 0 
     broker = "localhost"
  else

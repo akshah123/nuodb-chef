@@ -88,7 +88,7 @@ bash "Load License" do
   action :nothing
   user node[:nuodb]['user']
   code <<-EOH
-      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domainPassword']} --command "apply domain license licenseFile #{license_file}"
+      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
   EOH
 end
 
