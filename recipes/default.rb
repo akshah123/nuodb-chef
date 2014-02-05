@@ -16,6 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe "java"
+
 if node[:nuodb][:download_url].length() == 0
   if platform_family?("debian")
     download_url = "http://download.nuohub.org/nuodb-#{node[:nuodb]['version']}.linux.x64.deb"
@@ -28,7 +30,6 @@ end
 artifact = File.basename(download_url)
 license_file = File.join(node[:nuodb]['install_dir'], 'license.file')
 
-include_recipe "java"
 if node[:nuodb][:monitoring][:enable]
   include_recipe "nuodb::monit"
 end
@@ -68,6 +69,15 @@ end
     notifies :restart, "service[nuoagent]", :delayed
   end
 end
+['etc/nuodb.config'].each do |file|
+  template File.join(node[:nuodb]['install_dir'], file) do
+    source file
+    mode "0644"
+    owner node[:nuodb]['user']
+    group node[:nuodb]['group']
+    notifies :restart, "service[nuoagent]", :delayed
+  end
+end
 
 if node[:nuodb]["license"].length > 0
   template license_file do
@@ -90,15 +100,6 @@ bash "Load License" do
   code <<-EOH
       #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
   EOH
-end
-
-['etc/nuodb.config'].each do |file|
-  template File.join(node[:nuodb]['install_dir'], file) do
-    source file
-    mode "0644"
-    owner node[:nuodb]['user']
-    group node[:nuodb]['group']
-  end
 end
 #Broker node should also have a web console running
 if node[:nuodb]["is_broker"]
