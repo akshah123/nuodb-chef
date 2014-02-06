@@ -5,7 +5,7 @@ nuoDBConfiguration:
 <% if node[:nuodb][:brokers].length() == 0 
     broker = "localhost"
  else
-    broker = node[:nuodb][:brokers][0]
+    broker = node[:nuodb][:brokers][0].split(":")[0]
  end
 -%>
   broker: <%= broker %>   # NuoDB broker address
