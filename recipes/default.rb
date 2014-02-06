@@ -69,27 +69,28 @@ end
   end
 end
 
-if node[:nuodb]["license"].length > 0
-  template license_file do
-    source "/license.file"
-    mode "0644"
-    owner node[:nuodb]['user']
-    group node[:nuodb]['group']
-    notifies :run, "bash[Load License]"
-  end
-end
-
 service "nuoagent" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
 
-bash "Load License" do
-  action :nothing
-  user node[:nuodb]['user']
-  code <<-EOH
-      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker #{node[:nuodb]['brokers'][0]} --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
-  EOH
+if node[:nuodb][:isBroker]
+  if node[:nuodb]["license"].length > 0
+    template license_file do
+      source "/license.file"
+      mode "0644"
+      owner node[:nuodb]['user']
+      group node[:nuodb]['group']
+      notifies :run, "bash[Load License]"
+    end
+  end
+  bash "Load License" do
+    action :nothing
+    user node[:nuodb]['user']
+    code <<-EOH
+      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker localhost --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
+    EOH
+  end
 end
 
 #Broker node should also have a web console running
