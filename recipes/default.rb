@@ -84,7 +84,7 @@ service "nuoagent" do
   action [ :enable, :start ]
 end
 
-if node[:nuodb][:isBroker]
+if node[:nuodb][:is_broker]
   if node[:nuodb]["license"].length > 0
     template license_file do
       source "/license.file"
