@@ -15,14 +15,20 @@ check process nuoagent with pidfile /var/run/nuodb/nuoagent.pid
    
 <% if node[:nuodb]["is_broker"] -%>
 check process nuoautoconsole with pidfile /var/run/nuodb/nuoautoconsole.pid
-   start program = "/etc/init.d/nuoagent start" with timeout 30 seconds
-   stop  program = "/etc/init.d/nuoagent stop"
-   if failed host 127.0.0.1 port 8888 type tcp then restart
+   start program = "/etc/init.d/nuoautoconsole start" with timeout 30 seconds
+   stop  program = "/etc/init.d/nuoautoconsole stop"
+   if failed host 127.0.0.1 port <%= [:nuodb][:autoconsole][:port] %> type tcp then restart
    if 5 restarts within 5 cycles then timeout
 
+check process nuowebconsole with pidfile /var/run/nuodb/nuowebconsole.pid
+   start program = "/etc/init.d/nuowebconsole start" with timeout 30 seconds
+   stop  program = "/etc/init.d/nuowebconsole stop"
+   if failed host 127.0.0.1 port <%= [:nuodb][:webconsole][:port] %> type tcp then restart
+   if 5 restarts within 5 cycles then timeout
 <% end -%>
+
 <% node['filesystem'].each() do |device, stats|
-    if stats['fs_type'].eql?("ext4") -%>
+    if stats['fs_type'].eql?("ext4") and ! device.match('/dev/loop*') -%>
 check filesystem filesystem-<%= stats['mount'] %> with path <%= stats['mount'] %>
   if space usage > 80% for 3 cycles then alert
   alert <%= node[:nuodb][:monitoring][:alert_email] %>
