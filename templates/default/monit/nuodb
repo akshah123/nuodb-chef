@@ -22,7 +22,7 @@ check process nuoautoconsole with pidfile /var/run/nuodb/nuoautoconsole.pid
 
 <% end -%>
 <% node['filesystem'].each() do |device, stats|
-    if stats['fs_type'].eql?("ext4") -%>
+    if stats['fs_type'].eql?("ext4") and ! device.match('/dev/loop*') -%>
 check filesystem filesystem-<%= stats['mount'] %> with path <%= stats['mount'] %>
   if space usage > 80% for 3 cycles then alert
   alert <%= node[:nuodb][:monitoring][:alert_email] %>
