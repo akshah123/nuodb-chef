@@ -101,10 +101,8 @@ if node[:nuodb][:is_broker]
       #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker localhost --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
     EOH
   end
-end
-#Broker node should also have a web console running
-if node[:nuodb]["is_broker"]
-  ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
+  #Broker node should also have a web console running
+  ['etc/nuodb-rest-api.yml'].each do |file|
     template File.join(node[:nuodb]['install_dir'], file) do
       source file
       mode "0644"
@@ -113,10 +111,23 @@ if node[:nuodb]["is_broker"]
       notifies :restart, "service[nuoautoconsole]", :delayed
     end
   end
+  ['etc/webapp.properties'].each do |file|
+      template File.join(node[:nuodb]['install_dir'], file) do
+        source file
+        mode "0644"
+        owner node[:nuodb]['user']
+        group node[:nuodb]['group']
+        notifies :restart, "service[nuowebconsole]", :delayed
+      end
+    end
   service "nuoautoconsole" do
     action [ :enable, :start ]
     supports :status => true, :restart => true, :reload => true
   end
+  service "nuowebconsole" do
+      action [ :enable, :start ]
+      supports :status => true, :restart => true, :reload => true
+    end
 else
   ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
     template File.join(node[:nuodb]['install_dir'], file) do

@@ -32,7 +32,7 @@ default[:nuodb]["data_dir"] = "/opt/nuodb/data"
 default[:nuodb]["log_dir"] = "/opt/nuodb/logs"
   
 default[:nuodb][:altAddr] = "" # Use this if you want nodes to talk on another IP address not attached to the machine... i.e. AWS with public IP, or load balancer
-default[:nuodb][:balancer] = "RegionBalancer"
+default[:nuodb][:balancer] = "RegionBalancer" # balance load across multiople regions if you have them
 default[:nuodb]["brokers"] = ['localhost'] # Array of what the broker addresses are
 default[:nuodb]["enableAutomation"] = false # See NuoDB manual at 
 default[:nuodb]["enableAutomationBootstrap"] = false
@@ -43,6 +43,10 @@ default[:nuodb]["domain_password"] = "bird"
 default[:nuodb]["loglevel"] = "INFO" #  default logging level
 default[:nuodb]["port"] = "48004" # What port to run the agent on
 default[:nuodb]["portRange"] = "48005" # What ports do the sub-processes bind to? This is the starting address for the first one, subsequent processes increment from there
+default[:nuodb][:webconsole][:port] = 8080 
+default[:nuodb][:autoconsole][:port] = 8888
+default[:nuodb][:autoconsole][:admin_port] = 8889
+default[:nuodb][:autoconsole][:logfile] = "var/log/restsvc.log"
 default[:nuodb]["region"] = "default" # Do you want a multi-region database? If so name this region.
 
   
