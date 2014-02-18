@@ -23,12 +23,12 @@ logging:
 
   console:
     enabled: true
-    threshold: INFO
+    threshold: <%= node[:nuodb][:loglevel] %>
 
   file:
     enabled: false
     # Do not write log statements below this threshold to the file.
-    threshold: INFO
+    threshold: <%= node[:nuodb][:loglevel] %>
     currentLogFilename: <%= node[:nuodb][:autoconsole][:logfile] %>
     archive: false
     # archivedLogFilenamePattern: ./logs/example-%d.log.gz

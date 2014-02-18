@@ -32,7 +32,7 @@ default[:nuodb]["data_dir"] = "/opt/nuodb/data"
 default[:nuodb]["log_dir"] = "/opt/nuodb/logs"
   
 default[:nuodb][:altAddr] = "" # Use this if you want nodes to talk on another IP address not attached to the machine... i.e. AWS with public IP, or load balancer
-default[:nuodb][:balancer] = "RegionBalancer" # balance load across multiople regions if you have them
+default[:nuodb][:balancer] = "RegionBalancer" # balance load across multiple regions if you have them
 default[:nuodb]["brokers"] = ['localhost'] # Array of what the broker addresses are
 default[:nuodb]["enableAutomation"] = false # See NuoDB manual at 
 default[:nuodb]["enableAutomationBootstrap"] = false
