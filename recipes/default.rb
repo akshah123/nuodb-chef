@@ -22,7 +22,7 @@ if node[:nuodb][:download_url].length() == 0
   if platform_family?("debian")
     download_url = "http://download.nuohub.org/nuodb-#{node[:nuodb]['version']}.linux.x64.deb"
   else
-    download_url = "http://www.nuodb.com/latest/nuodb-#{node[:nuodb]['version']}.linux.x64.rpm"
+    download_url = "http://download.nuohub.org/nuodb-#{node[:nuodb]['version']}.linux.x64.rpm"
   end
 else
   download_url = node[:nuodb][:download_url]

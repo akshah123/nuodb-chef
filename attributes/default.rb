@@ -18,7 +18,7 @@
 
 # A lot of these fields are described in the NuoDB documentation at http://dev.nuodb.com/
 
-default[:nuodb][:version] = "2.0.2"
+default[:nuodb][:version] = "2.0.3"
 default[:nuodb][:download_url] = "" # Set this to something to use a custom download URL
 default[:nuodb]["license"] = ""
 
