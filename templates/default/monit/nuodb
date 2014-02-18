@@ -17,13 +17,13 @@ check process nuoagent with pidfile /var/run/nuodb/nuoagent.pid
 check process nuoautoconsole with pidfile /var/run/nuodb/nuoautoconsole.pid
    start program = "/etc/init.d/nuoautoconsole start" with timeout 30 seconds
    stop  program = "/etc/init.d/nuoautoconsole stop"
-   if failed host 127.0.0.1 port <%= [:nuodb][:autoconsole][:port] %> type tcp then restart
+   if failed host 127.0.0.1 port <%= node[:nuodb][:autoconsole][:port] %> type tcp then restart
    if 5 restarts within 5 cycles then timeout
 
 check process nuowebconsole with pidfile /var/run/nuodb/nuowebconsole.pid
    start program = "/etc/init.d/nuowebconsole start" with timeout 30 seconds
    stop  program = "/etc/init.d/nuowebconsole stop"
-   if failed host 127.0.0.1 port <%= [:nuodb][:webconsole][:port] %> type tcp then restart
+   if failed host 127.0.0.1 port <%= node[:nuodb][:webconsole][:port] %> type tcp then restart
    if 5 restarts within 5 cycles then timeout
 <% end -%>
 
