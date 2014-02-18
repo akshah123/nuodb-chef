@@ -2,10 +2,10 @@
 nuoDBConfiguration:
   username: <%= node[:nuodb]['domain_name'] %>
   password: <%= node[:nuodb]['domain_password'] %>
-<% if node[:nuodb][:brokers].length() == 0 
+<% if node[:nuodb][:autoconsole][:brokers].length() == 0 
     broker = "localhost"
  else
-    broker = node[:nuodb][:brokers][0].split(":")[0]
+    broker = node[:nuodb][:autoconsole][:brokers][0].split(":")[0]
  end
 -%>
   broker: <%= broker %>   # NuoDB broker address
