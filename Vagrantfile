@@ -5,7 +5,7 @@
 # How many nodes do you want?
 # Any more than 2 requires a license
 nodes = {
-  "db" => 4
+  "db" => 2
 }
 private_network = "192.168.50.10"
 
@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", 1024]
+    vb.customize ["modifyvm", :id, "--memory", 2048]
     #   vb.gui = true
   end
 
