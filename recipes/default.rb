@@ -27,12 +27,14 @@ if node[:nuodb][:download_url].length() == 0
 else
   download_url = node[:nuodb][:download_url]
 end
+if platform_family?("debian")
+  pkg_provider = Chef::Provider::Package::Dpkg
+else
+  pkg_provider = Chef::Provider::Package::Rpm
+end
+
 artifact = File.basename(download_url)
 license_file = File.join(node[:nuodb]['install_dir'], 'license.file')
-
-if node[:nuodb][:monitoring][:enable]
-  include_recipe "nuodb::monit"
-end
 
 group node[:nuodb]['group'] do
   action :create
@@ -49,9 +51,12 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{artifact}" do
   mode "0644"
 end
 
-package "#{Chef::Config[:file_cache_path]}/#{artifact}" do
+package "nuodb" do
   action :install
+  provider pkg_provider
+  source "#{Chef::Config[:file_cache_path]}/#{artifact}"
 end
+
 ['data_dir', 'log_dir'].each do |dir|
   directory node[:nuodb][dir] do
     action :create
@@ -112,22 +117,22 @@ if node[:nuodb][:is_broker]
     end
   end
   ['etc/webapp.properties'].each do |file|
-      template File.join(node[:nuodb]['install_dir'], file) do
-        source file
-        mode "0644"
-        owner node[:nuodb]['user']
-        group node[:nuodb]['group']
-        notifies :restart, "service[nuowebconsole]", :delayed
-      end
+    template File.join(node[:nuodb]['install_dir'], file) do
+      source file
+      mode "0644"
+      owner node[:nuodb]['user']
+      group node[:nuodb]['group']
+      notifies :restart, "service[nuowebconsole]", :delayed
     end
+  end
   service "nuoautoconsole" do
     action [ :enable, :start ]
     supports :status => true, :restart => true, :reload => true
   end
   service "nuowebconsole" do
-      action [ :enable, :start ]
-      supports :status => true, :restart => true, :reload => true
-    end
+    action [ :enable, :start ]
+    supports :status => true, :restart => true, :reload => true
+  end
 else
   ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
     template File.join(node[:nuodb]['install_dir'], file) do
@@ -140,5 +145,9 @@ else
 end
 if node[:nuodb][:testdata]
   include_recipe "nuodb::testdata"
+end
+
+if node[:nuodb][:monitoring][:enable]
+  include_recipe "nuodb::monit"
 end
 
