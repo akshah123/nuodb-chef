@@ -41,6 +41,8 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "centos6.4-chef"
   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
+  #config.vm.box = "ubuntu12.10-chef"
+  #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.10_chef-provisionerless.box"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", 2048]
@@ -56,6 +58,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       client.vm.network "private_network", ip: server['ipaddress']
       if server['ipaddress'] == private_network
         client.vm.network "forwarded_port", guest: 8080, host: 9000
+      end
+      if config.vm.box.include?("ubuntu")
+        client.vm.provision "shell", inline: "sudo apt-get update"
       end
       client.vm.provision :chef_solo do |chef|
         chef.cookbooks_path = ["#{File.expand_path("..",Dir.pwd)}"]
