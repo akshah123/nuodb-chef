@@ -32,10 +32,10 @@ unless File.exists?(sqlfile)
     user node[:nuodb]['user']
     cwd testdata_dir
     code <<-EOH
-      echo "CREATE TABLE IF NOT EXISTS testdb.test (ID integer NOT NULL AUTO_INCREMENT, HOST string, VALUE string);" > #{sqlfile}
+      echo "CREATE TABLE IF NOT EXISTS testdb.test (ID INTEGER NOT NULL generated always as identity  primary key, HOST STRING NOT NULL, VALUE STRING NOT NULL);" > #{sqlfile}
       for i in `seq 1 2000`;
       do 
-        echo "INSERT INTO testdb.test (VALUE) VALUES ('#{node['fqdn']}', '`echo $RANDOM | openssl md5 | awk '{print \$2}'`');" >> #{sqlfile}; 
+        echo "INSERT INTO testdb.test (HOST, VALUE) VALUES ('#{node['fqdn']}', '`echo $RANDOM | openssl md5 | awk '{print \$2}'`');" >> #{sqlfile}; 
       done;
     EOH
   end
