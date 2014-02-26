@@ -65,22 +65,13 @@ end
     mode "00755"
   end
 end
-['etc/default.properties'].each do |file|
+['etc/default.properties', 'etc/nuodb.config'].each do |file|
   template File.join(node[:nuodb]['install_dir'], file) do
     source file
     mode "0644"
     owner node[:nuodb]['user']
     group node[:nuodb]['group']
-    notifies :restart, "service[nuoagent]", :delayed
-  end
-end
-['etc/nuodb.config'].each do |file|
-  template File.join(node[:nuodb]['install_dir'], file) do
-    source file
-    mode "0644"
-    owner node[:nuodb]['user']
-    group node[:nuodb]['group']
-    notifies :restart, "service[nuoagent]", :delayed
+    notifies :restart, "service[nuoagent]"
   end
 end
 
@@ -103,7 +94,7 @@ if node[:nuodb][:is_broker]
     action :nothing
     user node[:nuodb]['user']
     code <<-EOH
-      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker localhost --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
+      #{node[:nuodb]['install_dir']}/bin/nuodbmgr --broker localhost:#{node[:nuodb]['port']} --password #{node[:nuodb]['domain_password']} --command "apply domain license licenseFile #{license_file}"
     EOH
   end
   #Broker node should also have a web console running
