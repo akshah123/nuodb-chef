@@ -8,3 +8,4 @@ end
 
 cookbook "chef-solo-search", :git => "https://github.com/edelight/chef-solo-search.git"
 cookbook "java"
+cookbook "yum-epel"
