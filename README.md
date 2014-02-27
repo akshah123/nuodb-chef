@@ -1,7 +1,8 @@
 
 NuoDB [Chef](http://www.getchef.com/chef/) Cookbook
 ===================================================
-Installs and configures NuoDB
+Installs and configures NuoDB.
+
 Lots of great information on NuoDB can be found at: http://dev.nuodb.com/
 
 Requirements
@@ -20,6 +21,7 @@ Using [Vagrant](http://www.vagrantup.com/) with this module
 ------------------------------
 To get started with Vagrant:
 * http://docs.vagrantup.com/v2/getting-started/index.html
+
 After starting the vagrant environment:
 * You can access the following from the host machine:
 ** The web console at http://localhost:8080
@@ -32,6 +34,7 @@ After starting the vagrant environment:
 `nodes = {
   "db" => 1 # Change this number to the number of nodes you want to start
 }`
+
 ** The first node (db0) will be the broker, and all other nodes (db1+) will connect to it.
 ** Console access will work as above
 ** Port forwarding of the broker and subprocess connections will be disabled. The only way to connect a client to the environment will be from inside the environment.
