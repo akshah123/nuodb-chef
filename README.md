@@ -24,20 +24,20 @@ To get started with Vagrant:
 
 After starting the vagrant environment:
 * You can access the following from the host machine:
-** The web console at http://localhost:8080
-** The rest API at http://localhost:8888
+  * The web console at http://localhost:8080
+  * The rest API at http://localhost:8888
 * Single node environments
-** The only node started (db0) will be in Broker mode
-** By default Vagrant will start one machine. From the host machine you can connect to the broker at localhost:48004 and subproceseses on localhost:48005-48020
+  * The only node started (db0) will be in Broker mode
+  * By default Vagrant will start one machine. From the host machine you can connect to the broker at localhost:48004 and subproceseses on localhost:48005-48020
 * Multi-node environments
-** To use the multi-node scaling capabilities of NuoDB you can start multiple machines in your vagrant environment. Do this by changing one line in the Vagrantfile:
+  * To use the multi-node scaling capabilities of NuoDB you can start multiple machines in your vagrant environment. Do this by changing one line in the Vagrantfile:
 `nodes = {
   "db" => 1 # Change this number to the number of nodes you want to start
 }`
 
-** The first node (db0) will be the broker, and all other nodes (db1+) will connect to it.
-** Console access will work as above
-** Port forwarding of the broker and subprocess connections will be disabled. The only way to connect a client to the environment will be from inside the environment.
+  * The first node (db0) will be the broker, and all other nodes (db1+) will connect to it. 
+  * Console access will work as above
+  * Port forwarding of the broker and subprocess connections will be disabled. The only way to connect a client to the environment will be from inside the environment.
 
 Installation of NuoDB using chef-solo
 -------------------------------------
