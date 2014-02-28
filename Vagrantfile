@@ -49,7 +49,7 @@ nodes.each_key do |node_type|
   end
 end
 
-puts "=============================================================================================="
+puts "================================================================================"
 puts "Once the vagrant environment has booted successfully:"
 puts "To access the web console from your host machine go to http://localhost:8080"
 puts "To access the REST API/Automation console from your host machine go to http://localhost:8888"
@@ -59,7 +59,7 @@ else
   puts "In multinode setups connecting to the database from the host machine is disabled."
   puts "To access the broker from inside the environment point your client to " + private_network + ":48004"
 end
-puts "=============================================================================================="
+puts "================================================================================"
 puts
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
