@@ -16,7 +16,7 @@ Platform
 
 Tested on:
 - Amazon Linux 2013.9, Ubuntu 12.10, Centos6.4
-
+<a name="vagrant"></a>
 Using [Vagrant](http://www.vagrantup.com/) with this module
 ------------------------------
 To get started with Vagrant:
