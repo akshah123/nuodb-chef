@@ -6,10 +6,13 @@
 # Any more than 2 requires a license
 # If you want to connect to the vagrant environment from your host machine then you should only use one node for reasons explained more in the README
 # If you want to create a multinode environment then any client that accesses the database will need to be inside the environment.
+
+license = "" # optional. Only needed for > 2 nodes
 nodes = {
   "db" => 1
 }
 private_network = "192.168.50.10"
+package_url = ""  # optional. If blank we will use the latest production release
 
 ### End User editable
 
@@ -41,6 +44,12 @@ nodes.each_key do |node_type|
       # if we are a single node we can tell the Broker to broadcast its connection address as the loopback device- that way when clients connect from the host they will be port forwarded to the VM
       # This trick breaks down quickly when you have multiple nodes.
       server['chef_json'][:nuodb]['altAddr'] = "127.0.0.1"
+    end
+    if package_url != ""
+      server['chef_json'][:nuodb][:download_url] = package_url
+    end
+    if license != ""
+      server['chef_json'][:nuodb][:license] = license
     end
     server['chef_json'][:nuodb][:port] = server['agent_port']
     server['chef_json'][:nuodb]['portRange'] = server['port_start'] 
