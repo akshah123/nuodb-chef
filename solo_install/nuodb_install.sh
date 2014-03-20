@@ -3,7 +3,7 @@
 if [ ! -f /var/chef/data.json ];
 then
   echo "Please create a /var/chef/data.json file that looks like https://raw.github.com/nuodb/dbaas/master/solo_install/data.json"
-  exit(2)
+  exit 2
 fi
 
 # install chef
