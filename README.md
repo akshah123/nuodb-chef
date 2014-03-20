@@ -41,8 +41,8 @@ After starting the vagrant environment:
 
 Installation of NuoDB using chef-solo
 -------------------------------------
-* On the host create a file called /var/chef/data.json with the attributes listed below using this [example](https://raw.github.com/nuodb/dbaas/master/solo_install/data.json) as a template
-* Download and run the [quickstart file](https://raw.github.com/nuodb/dbaas/master/solo_install/nuodb_install.sh) as sudo or root
+* On the host create a file called /var/chef/data.json with the attributes listed below using this [example](https://raw.github.com/nuodb/nuodb-chef/master/solo_install/data.json) as a template
+* Download and run the [quickstart file](https://raw.github.com/nuodb/nuodb-chef/master/solo_install/nuodb_install.sh) as sudo or root
 
 Attributes
 ----------
