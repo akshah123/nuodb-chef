@@ -91,7 +91,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #   vb.gui = true
   end
   
-  for mount in mounts:
+  mounts.each do |mount|
     config.vm.synced_folder mount[0], mount[1]
   end
 
