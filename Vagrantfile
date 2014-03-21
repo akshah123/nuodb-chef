@@ -6,8 +6,16 @@
 # Any more than 2 requires a license
 # If you want to connect to the vagrant environment from your host machine then you should only use one node for reasons explained more in the README
 # If you want to create a multinode environment then any client that accesses the database will need to be inside the environment.
+basebox = "centos6.4-chef"
+basebox_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
+#basebox = "ubuntu12.10-chef"
+#basebox_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.10_chef-provisionerless.box"
+#config.vm.box = "centos_x64_zfs"
+#config.vm.box_url = "https://s3.amazonaws.com/nuodb-vagrant/centos_x64_zfs.box"
 
 license = "" # optional. Only needed for > 2 nodes
+# array of arrays in the format [hostmountpoint, vmmountpoint]
+mounts = [] 
 nodes = {
   "db" => 1
 }
@@ -75,14 +83,16 @@ puts
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "centos6.4-chef"
-  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.4_chef-provisionerless.box"
-  #config.vm.box = "ubuntu12.10-chef"
-  #config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.10_chef-provisionerless.box"
+  config.vm.box = basebox
+    config.vm.box_url = basebox_url
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", 2048]
     #   vb.gui = true
+  end
+  
+  for mount in mounts:
+    config.vm.synced_folder mount[0], mount[1]
   end
 
   config.berkshelf.enabled = true
@@ -104,6 +114,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end 
       if config.vm.box.include?("ubuntu")
         client.vm.provision "shell", inline: "sudo apt-get update"
+      end
+      servers.each do |server|
+        client.vm.provision "shell", inline: "if [ `grep -c #{server['hostname']} /etc/hosts` -lt 1 ]; then cp /etc/hosts /tmp/hosts && echo #{server['ipaddress']}    #{server['hostname'].split(".")[0]} #{server['hostname']} >> /tmp/hosts && sudo chown root:root /tmp/hosts && sudo chmod 644 /tmp/hosts && sudo mv /tmp/hosts /etc/hosts; fi;"
       end
       client.vm.provision :chef_solo do |chef|
         chef.cookbooks_path = ["#{File.expand_path("..",Dir.pwd)}"]
