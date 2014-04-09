@@ -71,13 +71,15 @@ end
     mode "0644"
     owner node[:nuodb]['user']
     group node[:nuodb]['group']
-    notifies :restart, "service[nuoagent]"
+    notifies :restart, "service[nuoagent]" if node[:nuodb][:start_agent]
   end
 end
 
-service "nuoagent" do
-  supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+if node[:nuodb][:start_agent]
+  service "nuoagent" do
+    supports :status => true, :restart => true, :reload => true
+    action [ :enable, :start ]
+  end
 end
 
 if node[:nuodb][:is_broker]
