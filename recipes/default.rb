@@ -71,11 +71,11 @@ end
     mode "0644"
     owner node[:nuodb]['user']
     group node[:nuodb]['group']
-    notifies :restart, "service[nuoagent]" if node[:nuodb][:start_agent]
+    notifies :restart, "service[nuoagent]" if node[:nuodb][:start_service]
   end
 end
 
-if node[:nuodb][:start_agent]
+if node[:nuodb][:start_service]
   service "nuoagent" do
     supports :status => true, :restart => true, :reload => true
     action [ :enable, :start ]
@@ -106,7 +106,7 @@ if node[:nuodb][:is_broker]
       mode "0644"
       owner node[:nuodb]['user']
       group node[:nuodb]['group']
-      notifies :restart, "service[nuoautoconsole]", :delayed
+      notifies :restart, "service[nuoautoconsole]", :delayed if node[:nuodb][:start_service]
     end
   end
   ['etc/webapp.properties'].each do |file|
@@ -115,16 +115,18 @@ if node[:nuodb][:is_broker]
       mode "0644"
       owner node[:nuodb]['user']
       group node[:nuodb]['group']
-      notifies :restart, "service[nuowebconsole]", :delayed
+      notifies :restart, "service[nuowebconsole]", :delayed if node[:nuodb][:start_service]
     end
   end
-  service "nuoautoconsole" do
-    action [ :enable, :start ]
-    supports :status => true, :restart => true, :reload => true
-  end
-  service "nuowebconsole" do
-    action [ :enable, :start ]
-    supports :status => true, :restart => true, :reload => true
+  if node[:nuodb][:start_service]
+    service "nuoautoconsole" do
+      action [ :enable, :start ]
+      supports :status => true, :restart => true, :reload => true
+    end
+    service "nuowebconsole" do
+      action [ :enable, :start ]
+      supports :status => true, :restart => true, :reload => true
+    end
   end
 else
   ['etc/nuodb-rest-api.yml', 'etc/webapp.properties'].each do |file|
